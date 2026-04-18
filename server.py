@@ -20,25 +20,25 @@ def aggregate_metrics(metrics: List[Tuple[int, Metrics]]) -> Dict[str, float]:
     total_examples = sum([num_examples for num_examples, _ in metrics])
 
     # 1. Sum up the absolute counts across all hospitals
-    total_cost = sum([m["cost_score"] for _, m in metrics])
-    total_fp = sum([m["false_positives"] for _, m in metrics])
-    total_fn = sum([m["false_negatives"] for _, m in metrics])
-    total_tp = sum([m["true_positives"] for _, m in metrics])
-    total_tn = sum([m["true_negatives"] for _, m in metrics])
+    total_cost = sum([m.get("cost_score", 0) for _, m in metrics])
+    total_fp = sum([m.get("false_positives", 0) for _, m in metrics])
+    total_fn = sum([m.get("false_negatives", 0) for _, m in metrics])
+    total_tp = sum([m.get("true_positives", 0) for _, m in metrics])
+    total_tn = sum([m.get("true_negatives", 0) for _, m in metrics])
 
     # 2. Calculate the weighted average for rates/ratios
-    weighted_auroc = sum([num * m["auroc"] for num, m in metrics]) / total_examples
+    weighted_auroc = sum([num * m.get("auroc", 0) for num, m in metrics]) / total_examples
     weighted_log_loss = (
-        sum([num * m["log_loss"] for num, m in metrics]) / total_examples
+        sum([num * m.get("log_loss", 0) for num, m in metrics]) / total_examples
     )
     weighted_accuracy = (
-        sum([num * m["accuracy"] for num, m in metrics]) / total_examples
+        sum([num * m.get("accuracy", 0) for num, m in metrics]) / total_examples
     )
-    weighted_f1 = sum([num * m["f1_score"] for num, m in metrics]) / total_examples
+    weighted_f1 = sum([num * m.get("f1_score", 0) for num, m in metrics]) / total_examples
     weighted_precision = (
-        sum([num * m["precision"] for num, m in metrics]) / total_examples
+        sum([num * m.get("precision", 0) for num, m in metrics]) / total_examples
     )
-    weighted_recall = sum([num * m["recall"] for num, m in metrics]) / total_examples
+    weighted_recall = sum([num * m.get("recall", 0) for num, m in metrics]) / total_examples
 
     return {
         "TOTAL_COST": total_cost,
