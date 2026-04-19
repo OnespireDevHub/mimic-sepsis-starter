@@ -2,12 +2,12 @@
 analyze_model.py  —  Inspect a saved model checkpoint.
 
 After training, the server writes:
-  • final_model.pkl        — always the latest round
-  • model_round_1.pkl, model_round_2.pkl, …  — per-round checkpoints
+  • final_model.pkl                          — always the latest round
+  • model_checkpoints/model_round_1.pkl, …  — per-round checkpoints
 
 Usage (run from repo root):
-    python baseline_model/analyze_model.py                   # inspect final_model.pkl
-    python baseline_model/analyze_model.py model_round_3.pkl # inspect a specific round
+    python baseline_model/analyze_model.py                                    # inspect final_model.pkl
+    python baseline_model/analyze_model.py model_checkpoints/model_round_3.pkl
 """
 
 import sys

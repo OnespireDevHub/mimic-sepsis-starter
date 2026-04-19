@@ -1,3 +1,4 @@
+import os
 import cloudpickle
 import flwr as fl
 from typing import List, Tuple, Optional, Dict, Union
@@ -9,6 +10,8 @@ from flwr.common import (
     parameters_to_ndarrays,
 )
 from baseline_model.model import get_model, set_model_parameters
+
+CHECKPOINTS_DIR = "model_checkpoints"
 
 
 class SaveModelStrategy(fl.server.strategy.FedAvg):
@@ -48,7 +51,8 @@ class SaveModelStrategy(fl.server.strategy.FedAvg):
             set_model_parameters(full_pipeline, params_numpy)
 
             # Save a per-round checkpoint so no round is ever lost
-            checkpoint_path = f"model_round_{server_round}.pkl"
+            os.makedirs(CHECKPOINTS_DIR, exist_ok=True)
+            checkpoint_path = os.path.join(CHECKPOINTS_DIR, f"model_round_{server_round}.pkl")
             with open(checkpoint_path, "wb") as f:
                 cloudpickle.dump(full_pipeline, f)
 
